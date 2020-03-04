@@ -3246,8 +3246,9 @@ function runaqaTest(version, jdksource, buildList, target) {
         // TODO : make run functional using get.sh?
         yield exec.exec('git clone --depth 1 https://github.com/AdoptOpenJDK/openjdk-tests.git');
         process.chdir('openjdk-tests');
-        yield exec.exec('./get.sh');
-        //   await exec.exec('git clone --depth 1 https://github.com/AdoptOpenJDK/TKG.git')
+        yield exec.exec('pwd');
+        // await exec.exec('./get.sh')
+        yield exec.exec('git clone --depth 1 https://github.com/AdoptOpenJDK/TKG.git');
         process.chdir('TKG');
         yield exec.exec('make compile');
         yield exec.exec('make', [`${target}`]);
@@ -3284,6 +3285,8 @@ function installDependency() {
             const tempDir = path.join(tempDirectory, `temp_${Math.floor(Math.random() * 2000000000)}`);
             yield tc.extractZip(`${antContribFile}`, tempDir);
             io.mv(`${tempDir}\\ant-contrib.jar`, `${process.env.ANT_HOME}`);
+            //Hack, export SPEC to see how far we can go on windows( functional, system, openjdk )
+            process.env.SPEC = 'win_x86_cmprssptrs';
         }
         else if (process.platform === 'darwin') {
             yield exec.exec('brew install ant-contrib');

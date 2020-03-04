@@ -22,8 +22,9 @@ export async function runaqaTest(
     'git clone --depth 1 https://github.com/AdoptOpenJDK/openjdk-tests.git'
   )
   process.chdir('openjdk-tests')
-  await exec.exec('./get.sh')
- //   await exec.exec('git clone --depth 1 https://github.com/AdoptOpenJDK/TKG.git')
+  await exec.exec('pwd')
+  // await exec.exec('./get.sh')
+  await exec.exec('git clone --depth 1 https://github.com/AdoptOpenJDK/TKG.git')
   process.chdir('TKG')
   await exec.exec('make compile')
   await exec.exec('make', [`${target}`])
@@ -61,6 +62,8 @@ async function installDependency(): Promise<void> {
     )
     await tc.extractZip(`${antContribFile}`, tempDir)
     io.mv(`${tempDir}\\ant-contrib.jar`, `${process.env.ANT_HOME}`)
+    //Hack, export SPEC to see how far we can go on windows( functional, system, openjdk )
+    process.env.SPEC = 'win_x86_cmprssptrs'
   } else if (process.platform === 'darwin') {
     await exec.exec('brew install ant-contrib')
   } else {
