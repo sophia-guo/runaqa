@@ -4,6 +4,7 @@ import * as core from '@actions/core'
 import * as io from '@actions/io'
 import * as tc from '@actions/tool-cache'
 import * as path from 'path'
+import {ExecOptions} from '@actions/exec/lib/interfaces'
 
 const isWindows = process.platform === 'win32'
 export async function runaqaTest(
@@ -23,24 +24,30 @@ export async function runaqaTest(
   )
   process.chdir('openjdk-tests')
   await exec.exec('./get.sh')
- //   await exec.exec('git clone --depth 1 https://github.com/AdoptOpenJDK/TKG.git')
+  const options: ExecOptions = {}
+  let myOutput = ''
+  options.listeners = {
+    stdout: (data: Buffer) => {
+      myOutput += data.toString()
+    }
+  }
   process.chdir('TKG')
-  await exec.exec('make compile')
-  await exec.exec('make', [`${target}`])
+  try {
+    await exec.exec('make compile')
+    await exec.exec('make', [`${target}`], options)
+  } catch (error) {
+    core.setFailed(error.message)
+  }
+  if (myOutput.includes('FAILED test targets') === true) {
+    core.setFailed('There are failed tests')
+  }
 }
 
 function getJAVAHome(version: string, jdksource: string): string {
   let javaHome = process.env[`JAVA_HOME_${version}_X64`] as string
   if (jdksource) {
-    if (`JDK_${version}` in process.env) {
-      javaHome = process.env[`JDK_${version}`] as string
-    } else {
-      javaHome = process.env.JAVA_HOME as string
-    }
-    if (process.platform === 'darwin') {
-      javaHome = path.join(javaHome, '/Contents/Home')
-    }
-    core.info(`customized javaHOme is ${javaHome}`)
+    javaHome = process.env.JAVA_HOME as string
+    core.info(`customized javaHome is ${javaHome}`)
   }
   // Window path has to be in apostrophe. e.g. ''C:/Program Files/Java/***'
   if (isWindows) {
