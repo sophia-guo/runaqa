@@ -1,26 +1,19 @@
-name: "build-test"
-on: # rebuild any PRs and main branch changes
+name: "test checkout os version"
+on:
   push:
-    branches:
-      - feature
-
+    #branches-ignore:
+    #  - '**'
 jobs:
-  build: # make sure build/ci work properly
+  build:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v1
-    - uses: TheMrMilchmann/install-jdk@v1
-      with:
-        version: '11'
-        targets: 'JDK_11'
-    - name: AQA
-      uses: ./
+    - uses: sophia-guo/build-jdk-openj9@ubuntu16
+      id: buildJDK
       with: 
-        version: '11'
-        jdksource: 'customized'
-        build_list: 'functional'
-        target: '_floatSanityTests'
+        version: 14
+    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
