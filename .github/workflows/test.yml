@@ -9,10 +9,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [windows-2016, ubuntu-18.04, macos-latest]
     steps:
     - uses: actions/checkout@v1
-    - uses: sophia-guo/build-jdk-openj9@ubuntu16
+    - uses: sophia-guo/build-jdk-openj9@win
       id: buildJDK
       with: 
         version: 14
