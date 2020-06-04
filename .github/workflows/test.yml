@@ -1,8 +1,8 @@
 name: "test checkout os version"
 on:
   push:
-    #branches-ignore:
-    #  - '**'
+    branches-ignore:
+      - '**'
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -12,7 +12,7 @@ jobs:
         os: [windows-2016]
     steps:
     - uses: actions/checkout@v1
-    - uses: sophia-guo/build-jdk-openj9@wintest
+    - uses: eclipse/build-openj9@master
       id: buildJDK
       with: 
         version: 14
