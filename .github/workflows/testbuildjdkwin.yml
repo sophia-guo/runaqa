@@ -4,7 +4,7 @@ on: # rebuild any PRs and main branch changes
     #branches-ignore:
      # - '**'
 jobs:
-  build:
+  job1testopoenj9:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -23,8 +23,7 @@ jobs:
         name: buildJDK
         path: ./**/artifacts/*.tar.gz/
 
-jobs:
-  build:
+  job2testhotspot:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
