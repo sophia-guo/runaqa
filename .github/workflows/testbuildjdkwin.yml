@@ -4,24 +4,24 @@ on: # rebuild any PRs and main branch changes
     #branches-ignore:
      # - '**'
 jobs:
-  job1testopoenj9:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-2016]
-    steps:
-    - uses: actions/checkout@v1
-    - uses: sophia-guo/build-jdk@winnew
-      id: buildJDK
-      with: 
-        javaToBuild: 'jdk11u'
-        impl: 'openj9'
-    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
-    - uses: actions/upload-artifact@v2
-      with:
-        name: buildJDK
-        path: ./**/artifacts/*.tar.gz/
+#   job1testopoenj9:
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         os: [windows-2016]
+#     steps:
+#     - uses: actions/checkout@v1
+#     - uses: sophia-guo/build-jdk@winnew
+#       id: buildJDK
+#       with: 
+#         javaToBuild: 'jdk11u'
+#         impl: 'openj9'
+#     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
+#     - uses: actions/upload-artifact@v2
+#       with:
+#         name: buildJDK
+#         path: ./**/artifacts/*.tar.gz/
 
   job2testhotspot:
     runs-on: ${{ matrix.os }}
