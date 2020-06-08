@@ -1,8 +1,8 @@
-name: "build-jdk with adoptopenjdk openjdk-build hotspot 14"
+name: "build-jdk with adoptopenjdk openjdk-build hotspot"
 on: # rebuild any PRs and main branch changes
   push:
-    branches-ignore:
-      - '**'
+    #branches-ignore:
+     # - '**'
 jobs:
 #   job1testopoenj9:
 #     runs-on: ${{ matrix.os }}
@@ -15,7 +15,7 @@ jobs:
 #     - uses: sophia-guo/build-jdk@winnew
 #       id: buildJDK
 #       with: 
-#         javaToBuild: 'jdk11u'
+#         javaToBuild: 'jdk14u'
 #         impl: 'openj9'
 #     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
 #     - uses: actions/upload-artifact@v2
@@ -34,7 +34,7 @@ jobs:
     - uses: sophia-guo/build-jdk@winnew
       id: buildJDK
       with: 
-        javaToBuild: 'jdk11u'
+        javaToBuild: 'jdk14u'
     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
     - uses: actions/upload-artifact@v2
       with:
