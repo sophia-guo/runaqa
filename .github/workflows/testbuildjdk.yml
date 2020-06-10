@@ -1,10 +1,10 @@
 name: "build-jdk with adoptopenjdk openjdk-build hotspot"
 on: # rebuild any PRs and main branch changes
   push:
-    branches-ignore:
-      - '**'
+    #branches-ignore:
+      #- '**'
 jobs:
-  build:
+  hotspot14:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -12,10 +12,63 @@ jobs:
         os: [ubuntu-18.04, macos-10.15]
     steps:
     - uses: actions/checkout@v1
-    - uses: sophia-guo/build-jdk@ubuntu18
+    - uses: sophia-guo/build-jdk@winnew
       id: buildJDK
       with: 
         javaToBuild: 'jdk14u'
+    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
+    - uses: actions/upload-artifact@v2
+      with:
+        name: buildJDK
+        path: ./**/artifacts/*.tar.gz/
+  hotspot11:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-16.04, macos-10.15]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: sophia-guo/build-jdk@winnew
+      id: buildJDK
+      with: 
+        javaToBuild: 'jdk11u'
+    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
+    - uses: actions/upload-artifact@v2
+      with:
+        name: buildJDK
+        path: ./**/artifacts/*.tar.gz/
+  openj911u:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-18.04, macos-10.15]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: sophia-guo/build-jdk@winnew
+      id: buildJDK
+      with: 
+        javaToBuild: 'jdk11u'
+        impl: 'openj9'
+    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
+    - uses: actions/upload-artifact@v2
+      with:
+        name: buildJDK
+        path: ./**/artifacts/*.tar.gz/
+  openj914u:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-16.04, macos-10.15]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: sophia-guo/build-jdk@winnew
+      id: buildJDK
+      with: 
+        javaToBuild: 'jdk14u'
+        impl: 'openj9'
     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
     - uses: actions/upload-artifact@v2
       with:
