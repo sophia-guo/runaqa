@@ -1,76 +1,49 @@
-name: "build-jdk with adoptopenjdk openjdk-build hotspot"
+name: "build-openj9 with cleanup "
 on: # rebuild any PRs and main branch changes
   push:
     #branches-ignore:
       #- '**'
 jobs:
-  hotspot14:
+  openj914:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-18.04, macos-10.15]
+        os: [ubuntu-18.04]
     steps:
     - uses: actions/checkout@v1
-    - uses: sophia-guo/build-jdk@winnew
+    - uses: sophia-guo/build-openj9@clearup
       id: buildJDK
       with: 
-        javaToBuild: 'jdk14u'
+        version: '14'
     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
     - uses: actions/upload-artifact@v2
       with:
         name: buildJDK
         path: ./**/artifacts/*.tar.gz/
-  hotspot11:
+  openj911:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-16.04, macos-10.15]
+        os: [ubuntu-16.04, macos-10.15, windows-2016]
     steps:
     - uses: actions/checkout@v1
-    - uses: sophia-guo/build-jdk@winnew
+    - uses: sophia-guo/build-openj9@clearup
       id: buildJDK
       with: 
-        javaToBuild: 'jdk11u'
+        version: '11'
     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
-    - uses: actions/upload-artifact@v2
-      with:
-        name: buildJDK
-        path: ./**/artifacts/*.tar.gz/
-  openj911u:
+  openj98:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-18.04, macos-10.15]
+        os: [ubuntu-18.04]
     steps:
     - uses: actions/checkout@v1
-    - uses: sophia-guo/build-jdk@winnew
+    - uses: sophia-guo/build-openj9@clearup
       id: buildJDK
       with: 
-        javaToBuild: 'jdk11u'
-        impl: 'openj9'
+        version: '8'
     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
-    - uses: actions/upload-artifact@v2
-      with:
-        name: buildJDK
-        path: ./**/artifacts/*.tar.gz/
-  openj914u:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-16.04, macos-10.15]
-    steps:
-    - uses: actions/checkout@v1
-    - uses: sophia-guo/build-jdk@winnew
-      id: buildJDK
-      with: 
-        javaToBuild: 'jdk14u'
-        impl: 'openj9'
-    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
-    - uses: actions/upload-artifact@v2
-      with:
-        name: buildJDK
-        path: ./**/artifacts/*.tar.gz/
