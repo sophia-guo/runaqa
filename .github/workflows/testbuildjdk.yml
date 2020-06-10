@@ -1,4 +1,4 @@
-name: "build-openj9 with cleanup "
+name: "build-openj9 with cleanup on ubuntu "
 on: # rebuild any PRs and main branch changes
   push:
     #branches-ignore:
@@ -12,38 +12,21 @@ jobs:
         os: [ubuntu-18.04]
     steps:
     - uses: actions/checkout@v1
-    - uses: sophia-guo/build-openj9@clearup
+    - uses: sophia-guo/build-openj9@initial
       id: buildJDK
       with: 
         version: '14'
     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
-    - uses: actions/upload-artifact@v2
-      with:
-        name: buildJDK
-        path: ./**/artifacts/*.tar.gz/
   openj911:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-16.04, macos-10.15, windows-2016]
+        os: [windows-2016]
     steps:
     - uses: actions/checkout@v1
-    - uses: sophia-guo/build-openj9@clearup
+    - uses: sophia-guo/build-openj9@initial
       id: buildJDK
       with: 
         version: '11'
-    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
-  openj98:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-18.04]
-    steps:
-    - uses: actions/checkout@v1
-    - uses: sophia-guo/build-openj9@clearup
-      id: buildJDK
-      with: 
-        version: '8'
     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
