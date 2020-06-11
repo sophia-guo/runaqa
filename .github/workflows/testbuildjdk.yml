@@ -1,8 +1,8 @@
 name: "build-openj9 with cleanup on ubuntu "
 on: # rebuild any PRs and main branch changes
   push:
-    #branches-ignore:
-      #- '**'
+    branches-ignore:
+      - '**'
 jobs:
   openj914:
     runs-on: ${{ matrix.os }}
