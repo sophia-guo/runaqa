@@ -9,24 +9,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-18.04]
-    steps:
-    - uses: actions/checkout@v1
-    - uses: sophia-guo/build-openj9@initial
-      id: buildJDK
-      with: 
-        version: '14'
-    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
-  openj911:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
         os: [windows-2016]
     steps:
     - uses: actions/checkout@v1
-    - uses: sophia-guo/build-openj9@initial
+    - uses: AdoptOpenJDK/build-jdk@v1
       id: buildJDK
       with: 
-        version: '11'
+        version: '14'
     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
