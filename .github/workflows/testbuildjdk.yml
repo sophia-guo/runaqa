@@ -16,4 +16,5 @@ jobs:
       id: buildJDK
       with: 
         version: '14'
+        impl: 'openj9'
     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
