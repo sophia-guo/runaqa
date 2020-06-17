@@ -1,8 +1,8 @@
 name: "build-openj9 with cleanup on ubuntu "
 on: # rebuild any PRs and main branch changes
   push:
-    branches-ignore:
-      - '**'
+    #branches-ignore:
+      #- '**'
 jobs:
   openj914:
     runs-on: ${{ matrix.os }}
@@ -12,9 +12,8 @@ jobs:
         os: [windows-2016]
     steps:
     - uses: actions/checkout@v1
-    - uses: AdoptOpenJDK/build-jdk@v1
+    - uses: sophia-guo/build-jdk@bootjdkwin
       id: buildJDK
       with: 
-        version: '14'
-        impl: 'openj9'
+        javaToBuild: 'jdk14u'
     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
