@@ -11,9 +11,10 @@ jobs:
       matrix:
         os: [windows-2016]
     steps:
-    - uses: actions/checkout@v1
-    - uses: sophia-guo/build-jdk@bootjdkwin
-      id: buildJDK
-      with: 
-        javaToBuild: 'jdk14u'
-    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
+      - run: printenv
+#    - uses: actions/checkout@v1
+#    - uses: sophia-guo/build-jdk@bootjdkwin
+#      id: buildJDK
+ #     with: 
+ #       javaToBuild: 'jdk14u'
+ #   - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
