@@ -44,6 +44,7 @@ jobs:
       with:
         version: '8'
         targets: 'JDK_11'
+        source: 'nightly'
     - name: AQA
       uses: AdoptOpenJDK/run-aqa@v1
       with: 
