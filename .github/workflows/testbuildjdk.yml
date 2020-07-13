@@ -3,22 +3,32 @@ on:
   push:
 
 jobs:
-  openjdkbuild:
+  hotspotbuild:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-16.04, macos-10.15, windows-2016]
         javaToBuild: [jdk11u, jdk14u]
-        impl: [hotspot, openj9]
-        exclude:
-          - os:  windows-2016
-          - impl: openj9
     steps:
     - uses: actions/checkout@v1
     - uses: AdoptOpenJDK/build-jdk@v1
       id: buildJDK
       with: 
         javaToBuild: ${{ matrix.javaToBuild }}
-        impl: ${{ matrix.impl }}
+    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
+  openj9build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-16.04, macos-10.15]
+        javaToBuild: [jdk11u, jdk14u]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: AdoptOpenJDK/build-jdk@v1
+      id: buildJDK
+      with: 
+        javaToBuild: ${{ matrix.javaToBuild }}
+        impl: 'openj9'
     - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
