@@ -1,8 +1,8 @@
 name: "build-jdk with adoptopenjdk openjdk-build hotspot"
 on: # rebuild any PRs and main branch changes
   push:
-    #branches-ignore:
-      #- '**'
+    branches-ignore:
+      - '**'
 jobs:
   hotspot14:
     runs-on: ${{ matrix.os }}
