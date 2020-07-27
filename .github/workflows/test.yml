@@ -1,33 +1,23 @@
 name: "build-jdk with adoptopenjdk openjdk-build hotspot"
 on: # rebuild any PRs and main branch changes
   push:
-    branches-ignore:
-      - '**'
 jobs:
-  hotspot14:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-18.04, macos-10.15, windows-2016]
-    steps:
-    - uses: actions/checkout@v1
-    - uses: sophia-guo/build-jdk@bootjdk
-      id: buildJDK
-      with: 
-        javaToBuild: 'jdk14u'
-    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
   hotspot11:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-16.04, macos-10.15]
+        os: [windows-2016]
     steps:
     - uses: actions/checkout@v1
-    - uses: sophia-guo/build-jdk@bootjdk
-      id: buildJDK
+    - uses: AdoptOpenJDK/install-jdk@v1  
+      with:
+        version: '11'
+        source: 'nightly'
+    - name: AQA
+      uses: sophia-guo/run-aqa@windows
       with: 
-        javaToBuild: 'jdk11u'
-        impl: 'openj9'
-    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
+        version: '11'
+        jdksource: 'install-jdk'
+        build_list: 'openjdk'
+        target: '_jdk_custom'
