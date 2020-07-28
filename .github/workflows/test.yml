@@ -15,7 +15,7 @@ jobs:
         version: '11'
         source: 'nightly'
     - name: AQA
-      uses: sophia-guo/run-aqa@windows
+      uses: AdoptOpenJDK/run-aqa@master
       with: 
         version: '11'
         jdksource: 'install-jdk'
