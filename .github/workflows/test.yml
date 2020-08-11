@@ -2,22 +2,30 @@ name: "build-jdk with adoptopenjdk openjdk-build hotspot"
 on: # rebuild any PRs and main branch changes
   push:
 jobs:
-  hotspot11:
+  hotspot15:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2016]
+        os: [ubuntu-16.04, macos-10.15, windows-2016]
     steps:
     - uses: actions/checkout@v1
-    - uses: AdoptOpenJDK/install-jdk@v1  
-      with:
-        version: '11'
-        source: 'nightly'
-    - name: AQA
-      uses: AdoptOpenJDK/run-aqa@master
+    - uses: AdoptOpenJDK/build-jdk@v1
+      id: buildJDK
       with: 
-        version: '11'
-        jdksource: 'install-jdk'
-        build_list: 'openjdk'
-        target: '_jdk_custom'
+        javaToBuild: 'jdk15'
+    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
+  openj914:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-16.04, macos-10.15] #[ubuntu-16.04, macos-10.15, windows-2016]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: AdoptOpenJDK/build-jdk@v1
+      id: buildJDK
+      with: 
+        javaToBuild: 'jdk15'
+        impl: 'openj9'
+    - run: ${{ steps.buildJDK.outputs.BuildJDKDir }}/bin/java -version
